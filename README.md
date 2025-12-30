@@ -17,6 +17,23 @@ File Organizer was born out of frustration with managing vast amounts of content
 
 This tool embodies the principle of "scratching your own itch"—built to solve real problems I faced daily, and now shared as part of imediacorp's Open Science commitment to help others facing similar challenges.
 
+## 🎨 Perfect for Content Creators & Creative Studios
+
+File Organizer aligns with **imediacorp's Arts & Sciences philosophy** and complements our creative tools ecosystem:
+
+- **Rhapsode** (Narrative INDE) - Brings structure to storytelling
+- **Harmonia** (Music INDE) - Brings precision to music composition  
+- **Production Desk** - Brings order to production workflows
+- **File Organizer** - Brings scientific rigor to file organization
+
+**For content creators**, File Organizer solves the unique challenges of managing creative projects:
+- Organize scripts, drafts, and revisions (perfect for Rhapsode users)
+- Manage music projects, stems, and samples (perfect for Harmonia users)
+- Track production assets and deliverables (perfect for Production Desk users)
+- AI-powered classification understands your creative content, not just file types
+
+**Built for creators, by creators** - with the same Arts & Sciences approach that powers Rhapsode, Harmonia, and Production Desk.
+
 ## 🔬 Open Science Commitment
 
 This tool is part of **imediacorp's commitment to Open Science**. We believe scientific tools should be as transparent and reproducible as the science they support.
@@ -559,11 +576,23 @@ For issues, questions, or feature requests, please open an issue on GitHub.
 
 **imediacorp** is committed to innovation without borders, where profit is the outcome of purpose. We build tools that embody scientific integrity: falsifiable, reproducible, and transparent.
 
+### Our Creative Tools Ecosystem
+
+File Organizer is part of imediacorp's **Arts & Sciences** philosophy, complementing our creative tools:
+
+- **🎭 [Rhapsode](https://imediacorp.com/rhapsode)** - Narrative INDE for writers and storytellers
+- **🎵 [Harmonia](https://imediacorp.com/harmonia)** - Music INDE for composers and musicians
+- **🎬 Production Desk** - Production workflow tools for filmmakers
+- **📁 File Organizer** - Scientific file organization for creators
+
+Together, these tools bring **scientific rigor to the creative process**—where creativity meets precision, where inspiration meets structure.
+
 - 🌐 [Website](https://imediacorp.com)
 - 🔬 [Open Science Commitment](https://imediacorp.com/open-science)
 - 📧 Contact: [See imediacorp.com](https://imediacorp.com/contact)
 
 ---
 
-*"We don't just talk about Open Science—we build tools that embody it."*
+*"We don't just talk about Open Science—we build tools that embody it."*  
+*"Arts and Sciences: Where creativity meets rigor, where inspiration meets precision."*
 
