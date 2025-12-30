@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "file-organizer"
+version = "1.0.0"
+description = "A flexible, extensible tool for organizing large content trees"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"},
+]
+keywords = ["file", "organization", "filesystem", "utility"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: System :: Filesystems",
+    "Topic :: Utilities",
+]
+
+dependencies = [
+    "pyyaml>=5.4.0",
+    "httpx>=0.24.0",  # For AI API calls
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+]
+ai = [
+    "httpx>=0.24.0",
+    # Note: OpenAI, Anthropic, and Google packages are optional
+    # Users can install them separately if needed:
+    # - openai>=1.0.0 (for OpenAI)
+    # - anthropic>=0.7.0 (for Anthropic Claude)
+    # - google-generativeai>=0.3.0 (for Google Gemini)
+    # Ollama works with just httpx (or urllib)
+]
+
+[project.scripts]
+file-organizer = "file_organizer.cli.main:main"
+
+[tool.setuptools]
+packages = ["file_organizer"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+

@@ -1,0 +1,50 @@
+# Example configuration for rule-based organization strategy
+
+strategies:
+  rule_based:
+    enabled: true
+    merge_folders: true
+    file_rules:
+      # Exact match examples
+      - pattern: "Amazon Invoice.pdf"
+        type: exact
+        destination: "Financial/Invoices"
+      
+      # Glob pattern examples
+      - pattern: "*.pdf"
+        type: glob
+        destination: "Documents/PDFs"
+        recursive: false
+      
+      - pattern: "invoice*"
+        type: glob
+        destination: "Financial/Invoices"
+        recursive: true
+      
+      # Regex pattern example
+      - pattern: ".*contract.*\.pdf"
+        type: regex
+        destination: "Legal/Contracts"
+        recursive: true
+    
+    folder_rules:
+      # Exact folder name match
+      - pattern: "Auctions"
+        type: exact
+        destination: "Financial/Invoices"
+      
+      # Glob pattern for folders
+      - pattern: "*Photos*"
+        type: glob
+        destination: "Personal/Photos"
+      
+      # Regex pattern for folders
+      - pattern: ".*Music.*"
+        type: regex
+        destination: "Media/Music"
+
+general:
+  dry_run: false
+  log_file: null
+  transaction_log: null
+

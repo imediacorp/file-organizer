@@ -1,0 +1,68 @@
+# AI Configuration Example
+# This configuration enables AI-powered file organization features
+
+ai:
+  enabled: true
+  provider: "auto"  # auto, ollama, openai, gemini, anthropic
+  use_cache: true
+  cache_ttl: 3600  # Cache time-to-live in seconds (1 hour)
+  use_skills: true
+  
+  providers:
+    ollama:
+      endpoint: "http://localhost:11434"
+      model: "llama3.1:8b"
+      timeout: 30
+      timeout_quick: 15
+    
+    openai:
+      api_key: "${OPENAI_API_KEY}"  # Set in environment variable
+      model: "gpt-4o-mini"
+      timeout: 30
+      timeout_quick: 15
+    
+    gemini:
+      api_key: "${GEMINI_API_KEY}"  # Set in environment variable
+      model: "gemini-1.5-flash"
+      timeout: 30
+      timeout_quick: 15
+    
+    anthropic:
+      api_key: "${ANTHROPIC_API_KEY}"  # Set in environment variable
+      model: "claude-3-haiku-20240307"
+      timeout: 30
+      timeout_quick: 15
+
+library_science:
+  enabled: true
+  classification_scheme: "functional"  # functional, loc, dewey, custom
+  metadata_extraction: true
+  suggest_naming: true
+
+strategies:
+  ai_suggested:
+    enabled: true
+    provider: "auto"
+    confidence_threshold: 0.6  # Only execute suggestions with confidence >= 0.6
+    batch_size: 10  # Number of files to analyze per AI request
+    use_cache: true
+
+  filetype:
+    enabled: true
+    max_depth: 3
+    folder_prefix: "_by_type_"
+    categories:
+      Documents: [.doc, .docx, .txt]
+      PDFs: [.pdf]
+      Images: [.jpg, .png, .gif]
+  
+  rule_based:
+    enabled: false
+    file_rules: []
+    folder_rules: []
+
+general:
+  dry_run: false
+  log_file: null
+  transaction_log: null
+
