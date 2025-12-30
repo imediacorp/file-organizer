@@ -16,5 +16,5 @@ try:
     from file_organizer.ai import get_ai_suggestion, AIProvider, get_provider_status
     __all__ = ['FileOrganizer', 'FileOperations', 'Strategy', 'get_ai_suggestion', 'AIProvider', 'get_provider_status']
 except Exception:
-__all__ = ['FileOrganizer', 'FileOperations', 'Strategy']
+    __all__ = ['FileOrganizer', 'FileOperations', 'Strategy']
 

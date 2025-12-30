@@ -5,7 +5,7 @@ Rule-Based Organization Strategy - Organize files using pattern matching rules.
 import re
 import fnmatch
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 from file_organizer.core.strategy import Strategy
 from file_organizer.core.operations import FileOperations
 
