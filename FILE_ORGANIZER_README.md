@@ -34,6 +34,25 @@ File Organizer aligns with **imediacorp's Arts & Sciences philosophy** and compl
 
 **Built for creators, by creators** - with the same Arts & Sciences approach that powers Rhapsode, Harmonia, and Production Desk.
 
+## 🔬 Perfect for Research Institutes & CHaDD Users
+
+File Organizer is also ideal for **research institutes and commercial organizations using CHaDD diagnostic tools**:
+
+- **Research Data Management**: Organize datasets, research papers, documentation, and results
+- **CHaDD Integration**: Manage diagnostic data, reports, compliance documents, and analysis outputs
+- **Reproducibility**: Transaction logging ensures research workflows are reproducible
+- **Scientific Rigor**: Aligns with Open Science principles for transparent research
+- **Multi-Domain Support**: Handles diverse file types from medical, industrial, infrastructure, and geophysical diagnostics
+
+**For CHaDD users**, File Organizer provides:
+- Organized storage for diagnostic outputs and reports
+- Version tracking for diagnostic configurations and results
+- Metadata extraction for research documentation
+- Cross-platform compatibility for research teams
+- Network drive support for collaborative research
+
+**Built with scientific rigor** - the same principles that power CHaDD's diagnostic capabilities.
+
 ## 🔬 Open Science Commitment
 
 This tool is part of **imediacorp's commitment to Open Science**. We believe scientific tools should be as transparent and reproducible as the science they support.
@@ -576,16 +595,21 @@ For issues, questions, or feature requests, please open an issue on GitHub.
 
 **imediacorp** is committed to innovation without borders, where profit is the outcome of purpose. We build tools that embody scientific integrity: falsifiable, reproducible, and transparent.
 
-### Our Creative Tools Ecosystem
+### Our Tools Ecosystem
 
-File Organizer is part of imediacorp's **Arts & Sciences** philosophy, complementing our creative tools:
+File Organizer is part of imediacorp's **Arts & Sciences** philosophy, complementing our tools:
 
+**Creative Tools:**
 - **🎭 [Rhapsode](https://imediacorp.com/rhapsode)** - Narrative INDE for writers and storytellers
 - **🎵 [Harmonia](https://imediacorp.com/harmonia)** - Music INDE for composers and musicians
 - **🎬 Production Desk** - Production workflow tools for filmmakers
 - **📁 File Organizer** - Scientific file organization for creators
 
-Together, these tools bring **scientific rigor to the creative process**—where creativity meets precision, where inspiration meets structure.
+**Diagnostic & Research Tools:**
+- **🔬 CHaDD** - Comprehensive Harmonic Autonomous Dual-Probe Diagnostic platform
+- **📁 File Organizer** - Research data management and organization for CHaDD users
+
+Together, these tools bring **scientific rigor to both creative and research processes**—where creativity meets precision, where research meets reproducibility, where inspiration meets structure.
 
 - 🌐 [Website](https://imediacorp.com)
 - 🔬 [Open Science Commitment](https://imediacorp.com/open-science)

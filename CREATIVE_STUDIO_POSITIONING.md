@@ -1,12 +1,17 @@
-# File Organizer - Creative Studio Positioning
+# File Organizer - Creative Studio & Research Positioning
 
 ## Strategic Alignment with imediacorp's Arts & Sciences Philosophy
 
-File Organizer is perfectly positioned to serve **content creators and creative studios**, aligning with imediacorp's core philosophy of **Arts and Sciences** and complementing existing products:
+File Organizer is perfectly positioned to serve **content creators, creative studios, research institutes, and CHaDD users**, aligning with imediacorp's core philosophy of **Arts and Sciences** and complementing existing products:
 
+**Creative Tools:**
 - **Rhapsode** - Narrative INDE (Integrated Development Environment for Creativity)
 - **Production Desk** - Production workflow tools
 - **Harmonia** - Music INDE
+
+**Diagnostic & Research Tools:**
+- **CHaDD** - Comprehensive Harmonic Autonomous Dual-Probe Diagnostic platform
+- **File Organizer** - Scientific file organization for creators and researchers
 
 ## The Creative Studio Challenge
 
