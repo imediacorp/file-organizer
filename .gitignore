@@ -45,3 +45,4 @@ organization_moves.json
 # Temporary files
 *.tmp
 *.bak
+__pycache__/
