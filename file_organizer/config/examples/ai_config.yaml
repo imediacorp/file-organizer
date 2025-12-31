@@ -44,7 +44,8 @@ strategies:
     enabled: true
     provider: "auto"
     confidence_threshold: 0.6  # Only execute suggestions with confidence >= 0.6
-    batch_size: 10  # Number of files to analyze per AI request
+    batch_size: 5  # Number of files to analyze per AI request (smaller = faster per batch)
+    max_files: 50  # Maximum total files to analyze (limits processing time)
     use_cache: true
 
   filetype:

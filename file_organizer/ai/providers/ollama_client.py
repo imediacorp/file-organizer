@@ -68,7 +68,7 @@ def get_ollama_suggestion(
     """
     base_url = endpoint or os.environ.get("OLLAMA_ENDPOINT") or "http://localhost:11434"
     base_url = base_url.rstrip("/")
-    model = model or os.environ.get("OLLAMA_MODEL") or "llama3.1:8b"
+    model = model or os.environ.get("OLLAMA_MODEL") or "llama3.1:latest"
     
     if timeout is None:
         timeout = 15 if quick else 30

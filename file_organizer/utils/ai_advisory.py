@@ -19,6 +19,7 @@ def suggest_organization_structure(
     path: Path,
     provider: str = "auto",
     max_files: int = 50,
+    timeout: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Analyze directory structure and suggest organization improvements.
     
@@ -99,6 +100,7 @@ Return your response as structured text with clear sections.
             payload,
             provider=provider if isinstance(provider, str) else AIProvider.AUTO,
             use_cache=True,
+            timeout=timeout if timeout is not None else 45,  # Longer timeout for classification
         )
         
         if isinstance(result, dict) and result.get("ok"):
@@ -108,15 +110,23 @@ Return your response as structured text with clear sections.
                 "files_analyzed": len(files),
             }
         else:
+            # Get more detailed error information
+            error_msg = "AI analysis failed"
+            if isinstance(result, dict):
+                error_detail = result.get("error")
+                if error_detail:
+                    error_msg = f"AI analysis failed: {error_detail}"
+            elif isinstance(result, str) and result.startswith("AI error:"):
+                error_msg = result
             return {
                 "success": False,
-                "error": "AI analysis failed",
+                "error": error_msg,
                 "suggestions": [],
             }
     except Exception as e:
         return {
             "success": False,
-            "error": str(e),
+            "error": f"Exception: {str(e)}",
             "suggestions": [],
         }
 
@@ -124,6 +134,7 @@ Return your response as structured text with clear sections.
 def classify_document(
     file_path: Path,
     provider: str = "auto",
+    timeout: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Classify a single document using AI.
     
@@ -175,6 +186,7 @@ Return your response as JSON with these fields.
             payload,
             provider=provider if isinstance(provider, str) else AIProvider.AUTO,
             use_cache=True,
+            timeout=timeout if timeout is not None else 45,  # Longer timeout for classification
         )
         
         if isinstance(result, dict) and result.get("ok"):
@@ -198,9 +210,12 @@ Return your response as JSON with these fields.
                 "classification": {"raw_response": text},
             }
         else:
+            error_msg = "AI classification failed"
+            if isinstance(result, dict) and result.get("error"):
+                error_msg = f"AI classification failed: {result.get('error')}"
             return {
                 "success": False,
-                "error": "AI classification failed",
+                "error": error_msg,
             }
     except Exception as e:
         return {
@@ -212,6 +227,7 @@ Return your response as JSON with these fields.
 def extract_metadata(
     file_path: Path,
     provider: str = "auto",
+    timeout: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Extract metadata from a file using AI.
     
@@ -264,6 +280,7 @@ Return your response as JSON with these fields.
             payload,
             provider=provider if isinstance(provider, str) else AIProvider.AUTO,
             use_cache=True,
+            timeout=timeout if timeout is not None else 45,  # Longer timeout for classification
         )
         
         if isinstance(result, dict) and result.get("ok"):
@@ -287,9 +304,12 @@ Return your response as JSON with these fields.
                 "metadata": {"raw_response": text},
             }
         else:
+            error_msg = "AI metadata extraction failed"
+            if isinstance(result, dict) and result.get("error"):
+                error_msg = f"AI metadata extraction failed: {result.get('error')}"
             return {
                 "success": False,
-                "error": "AI metadata extraction failed",
+                "error": error_msg,
             }
     except Exception as e:
         return {
@@ -302,6 +322,7 @@ def suggest_filename(
     file_path: Path,
     content_hint: Optional[str] = None,
     provider: str = "auto",
+    timeout: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Suggest a better filename for a file.
     
@@ -348,6 +369,7 @@ Return your response as JSON with:
             payload,
             provider=provider if isinstance(provider, str) else AIProvider.AUTO,
             use_cache=True,
+            timeout=timeout if timeout is not None else 30,  # Timeout for filename suggestions
         )
         
         if isinstance(result, dict) and result.get("ok"):
@@ -371,9 +393,12 @@ Return your response as JSON with:
                 "suggestion": {"raw_response": text},
             }
         else:
+            error_msg = "AI filename suggestion failed"
+            if isinstance(result, dict) and result.get("error"):
+                error_msg = f"AI filename suggestion failed: {result.get('error')}"
             return {
                 "success": False,
-                "error": "AI filename suggestion failed",
+                "error": error_msg,
             }
     except Exception as e:
         return {
