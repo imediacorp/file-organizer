@@ -1,8 +1,45 @@
 # Eratosthenes - Acting on AI Recommendations
 
-## Overview
+## 🎯 Practical Workflow
 
-Eratosthenes can both **suggest** organization improvements (advisory mode) and **execute** organization based on AI analysis (action mode).
+**Quick Start: From Recommendations to Execution**
+
+```
+1. Get Recommendations → 2. Preview Actions → 3. Execute → 4. Review
+```
+
+### Step 1: Get Recommendations
+```bash
+file-organizer suggest "04-Financial" --provider gemini --max-files 10
+```
+*Shows organization suggestions (does NOT move files)*
+
+### Step 2: Preview What AI Will Do
+```bash
+file-organizer preview ai_suggested "04-Financial"
+```
+*Shows exactly which files will move and where (does NOT move files)*
+
+### Step 3: Execute
+```bash
+# Test first (safe)
+file-organizer organize ai_suggested "04-Financial" --dry-run
+
+# Then execute
+file-organizer organize ai_suggested "04-Financial"
+```
+*Actually moves files based on AI suggestions*
+
+### Step 4: Review
+```bash
+# Check transaction log
+cat organization_transaction_log.json
+
+# Rollback if needed
+file-organizer rollback organization_transaction_log.json
+```
+
+---
 
 ## Recommended Workflow
 
@@ -29,18 +66,20 @@ Eratosthenes can both **suggest** organization improvements (advisory mode) and 
 ### 1. Advisory Mode (Suggestions Only)
 Get recommendations without making changes:
 ```bash
-file-organizer suggest "04-Financial" --max-files 10
+file-organizer suggest "04-Financial" --provider gemini --max-files 10
 ```
+**Output:** Text recommendations about folder structure and organization
 
 ### 2. Action Mode (Execute AI Recommendations)
 Actually organize files based on AI analysis:
 ```bash
-# Preview what AI would do
+# Preview what AI would do (shows file moves)
 file-organizer preview ai_suggested "04-Financial"
 
-# Execute AI organization
+# Execute AI organization (moves files)
 file-organizer organize ai_suggested "04-Financial"
 ```
+**Output:** Actual file moves with confidence scores and reasoning
 
 ## Step-by-Step: Acting on Recommendations
 
