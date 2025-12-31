@@ -75,7 +75,7 @@ class ConfigManager:
                     'enabled': True,
                     'categories': FileTypeStrategy.DEFAULT_CATEGORIES,
                     'max_depth': 3,
-                    'folder_prefix': '_by_type_',
+                    'folder_prefix': '',  # No prefix by default - folders named "PDFs", "Images", etc.
                     'skip_folders': [],
                 },
                 'rule_based': {

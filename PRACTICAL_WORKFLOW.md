@@ -53,7 +53,8 @@ file-organizer suggest "04-Financial" --provider gemini --max-files 10
 
 **Command:**
 ```bash
-file-organizer preview ai_suggested "04-Financial"
+# Use "." as root path and --target-folder for subdirectories (recommended)
+file-organizer preview ai_suggested "." --target-folder "04-Financial/Invoices & Receipts" --config ai_config.yaml
 ```
 
 **What it does:**
@@ -61,6 +62,8 @@ file-organizer preview ai_suggested "04-Financial"
 - Shows where they'll go
 - Displays confidence scores
 - **Does NOT move any files** (preview only)
+
+**Important:** Use `"."` as the root path and `--target-folder` for the subdirectory to avoid path issues.
 
 **Example output:**
 ```
@@ -81,12 +84,14 @@ Preview: 15 operations would be performed
 
 **Options:**
 ```bash
-# Preview specific folder only
-file-organizer preview ai_suggested "04-Financial" --target-folder "Invoices & Receipts"
+# Preview specific folder (recommended approach)
+file-organizer preview ai_suggested "." --target-folder "04-Financial/Invoices & Receipts" --config ai_config.yaml
 
-# Use specific provider
+# Preview entire directory
 file-organizer preview ai_suggested "04-Financial" --config ai_config.yaml
 ```
+
+**Note:** The `ai_config.yaml` file should have `confidence_threshold: 0.5` (or lower) to catch more suggestions. Default is 0.6 which may filter out valid suggestions.
 
 ---
 
@@ -165,18 +170,23 @@ file-organizer rollback organization_transaction_log.json
 # 1. Get recommendations (advisory)
 file-organizer suggest "04-Financial" --provider gemini --max-files 10
 
-# 2. Preview what AI will do
-file-organizer preview ai_suggested "04-Financial"
+# 2. Preview what AI will do (use "." as root with --target-folder)
+file-organizer preview ai_suggested "." --target-folder "04-Financial/Invoices & Receipts" --config ai_config.yaml
 
 # 3. Test with dry-run (safe)
-file-organizer organize ai_suggested "04-Financial" --dry-run
+file-organizer organize ai_suggested "." --target-folder "04-Financial/Invoices & Receipts" --config ai_config.yaml --dry-run
 
 # 4. Execute for real
-file-organizer organize ai_suggested "04-Financial"
+file-organizer organize ai_suggested "." --target-folder "04-Financial/Invoices & Receipts" --config ai_config.yaml
 
 # 5. Review results
 cat organization_transaction_log.json
 ```
+
+**Key Points:**
+- Use `"."` as root path and `--target-folder` for subdirectories
+- Use `--config ai_config.yaml` with `confidence_threshold: 0.5`
+- Always preview before executing
 
 ---
 
@@ -219,16 +229,25 @@ Create `ai_config.yaml`:
 strategies:
   ai_suggested:
     provider: "gemini"  # or "grok", "ollama", "auto"
-    confidence_threshold: 0.7  # Only execute 70%+ confidence moves
+    confidence_threshold: 0.5  # Lower threshold to catch more suggestions (default 0.6 may be too high)
     max_files: 50  # Limit files analyzed
     batch_size: 5  # Files per AI request
+    use_cache: true
 ```
 
 **Use it:**
 ```bash
-file-organizer preview ai_suggested "04-Financial" --config ai_config.yaml
-file-organizer organize ai_suggested "04-Financial" --config ai_config.yaml
+# Preview (recommended: use "." as root with --target-folder)
+file-organizer preview ai_suggested "." --target-folder "04-Financial/Invoices & Receipts" --config ai_config.yaml
+
+# Execute
+file-organizer organize ai_suggested "." --target-folder "04-Financial/Invoices & Receipts" --config ai_config.yaml
 ```
+
+**Why confidence_threshold: 0.5?**
+- AI often generates suggestions with confidence 0.5-0.6
+- Default threshold of 0.6 may filter out valid suggestions
+- 0.5 catches more suggestions while still filtering very low confidence ones
 
 ---
 
@@ -259,16 +278,20 @@ file-organizer suggest <path> --provider <provider> --max-files <num>
 
 ### Preview Actions
 ```bash
-file-organizer preview ai_suggested <path> [--target-folder <folder>]
+# Recommended: use "." as root with --target-folder
+file-organizer preview ai_suggested "." --target-folder <folder> [--config ai_config.yaml]
+
+# Or preview entire directory
+file-organizer preview ai_suggested <path> [--config ai_config.yaml]
 ```
 
 ### Execute Organization
 ```bash
-# Test first
-file-organizer organize ai_suggested <path> --dry-run
+# Test first (recommended: use "." as root with --target-folder)
+file-organizer organize ai_suggested "." --target-folder <folder> --config ai_config.yaml --dry-run
 
 # Execute
-file-organizer organize ai_suggested <path>
+file-organizer organize ai_suggested "." --target-folder <folder> --config ai_config.yaml
 ```
 
 ### Rollback

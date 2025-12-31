@@ -13,7 +13,7 @@ class FileTypeStrategy(Strategy):
     """
     Organize files by their file type/extension into category folders.
     
-    Files are grouped into folders like `_by_type_PDFs`, `_by_type_Images`, etc.
+    Files are grouped into folders like `PDFs`, `Images`, etc.
     """
     
     # Default file type categories
@@ -42,13 +42,13 @@ class FileTypeStrategy(Strategy):
         Config options:
             categories: Dict mapping category names to lists of file extensions
             max_depth: Maximum recursion depth (default: 3)
-            folder_prefix: Prefix for type folders (default: '_by_type_')
+            folder_prefix: Prefix for type folders (default: '' - no prefix)
             skip_folders: List of folder patterns to skip
         """
         super().__init__(config)
         self.categories = self.get_config('categories', self.DEFAULT_CATEGORIES)
         self.max_depth = self.get_config('max_depth', 3)
-        self.folder_prefix = self.get_config('folder_prefix', '_by_type_')
+        self.folder_prefix = self.get_config('folder_prefix', '')  # No prefix by default
         self.skip_folders = self.get_config('skip_folders', [])
     
     def get_file_category(self, file_path: Path) -> str:
@@ -86,8 +86,8 @@ class FileTypeStrategy(Strategy):
             if rel_path.startswith(skip_pattern) or skip_pattern in rel_path:
                 return True
         
-        # Skip _by_type_ folders to avoid re-organizing
-        if self.folder_prefix in folder_path.name:
+        # Skip folders with the prefix to avoid re-organizing
+        if self.folder_prefix and self.folder_prefix in folder_path.name:
             return True
         
         return False
@@ -166,8 +166,11 @@ class FileTypeStrategy(Strategy):
                     files_by_type[category].append(item)
                 elif item.is_dir():
                     # Recursively organize subdirectories
-                    if self.folder_prefix not in item.name:
-                        self._organize_folder(item, root_path, operations, current_depth + 1, stats)
+                    # Skip folders that match category names (to avoid re-organizing)
+                    if not self.folder_prefix or self.folder_prefix not in item.name:
+                        # Also skip if folder name matches a category (likely already organized)
+                        if item.name not in self.categories:
+                            self._organize_folder(item, root_path, operations, current_depth + 1, stats)
             
             # Only organize if there are files and more than one type
             if has_files and len(files_by_type) > 1:
@@ -254,8 +257,10 @@ class FileTypeStrategy(Strategy):
                     category = self.get_file_category(item)
                     files_by_type[category].append(item)
                 elif item.is_dir():
-                    if self.folder_prefix not in item.name:
-                        self._preview_folder(item, root_path, preview_moves, current_depth + 1)
+                    # Skip folders that match category names (likely already organized)
+                    if not self.folder_prefix or self.folder_prefix not in item.name:
+                        if item.name not in self.categories:
+                            self._preview_folder(item, root_path, preview_moves, current_depth + 1)
             
             # Generate preview moves
             if has_files and len(files_by_type) > 1:

@@ -51,7 +51,7 @@ strategies:
   filetype:
     enabled: true
     max_depth: 3
-    folder_prefix: "_by_type_"
+    folder_prefix: ""  # No prefix - folders will be named "PDFs", "Images", etc.
     categories:
       Documents: [.doc, .docx, .txt]
       PDFs: [.pdf]
