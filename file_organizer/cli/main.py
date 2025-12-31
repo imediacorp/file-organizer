@@ -114,8 +114,17 @@ def preview_command(args):
         print(f"\nPreview: {len(preview_moves)} operations would be performed\n")
         print("=" * 80)
         
+        # Show confidence and reasoning for AI strategy
+        show_details = args.strategy == 'ai_suggested'
+        
         for i, move in enumerate(preview_moves[:50], 1):
-            print(f"{i}. {move['source']} -> {move['destination']}")
+            if show_details and 'confidence' in move:
+                print(f"{i}. {move['source']} -> {move['destination']}")
+                print(f"   Confidence: {move.get('confidence', 0):.2f}")
+                if move.get('reasoning'):
+                    print(f"   Reasoning: {move.get('reasoning', '')[:100]}")
+            else:
+                print(f"{i}. {move['source']} -> {move['destination']}")
         
         if len(preview_moves) > 50:
             print(f"\n... and {len(preview_moves) - 50} more operations")
