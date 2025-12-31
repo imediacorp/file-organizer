@@ -17,11 +17,50 @@ class GeminiClientError(RuntimeError):
     pass
 
 
+def _load_hdpd_config(config_name: str) -> Optional[Dict[str, Any]]:
+    """Load configuration from HDPD config directory.
+    
+    Args:
+        config_name: Name of config file (e.g., 'grok', 'gemini')
+        
+    Returns:
+        Dict with config values or None if not found
+    """
+    hdpd_config_path = os.path.expanduser("~/PycharmProjects/HDPD/config")
+    config_file = os.path.join(hdpd_config_path, f"{config_name}.yaml")
+    
+    if not os.path.exists(config_file):
+        return None
+    
+    try:
+        import yaml
+        with open(config_file, 'r') as f:
+            return yaml.safe_load(f)
+    except Exception:
+        return None
+
+
+def _get_gemini_api_key() -> Optional[str]:
+    """Get Gemini API key from HDPD config or environment."""
+    # Try HDPD config first
+    config = _load_hdpd_config("gemini")
+    if config and config.get("api_key") and config["api_key"] != "REPLACE_ME":
+        api_key = config["api_key"]
+        # Check for placeholder values
+        low = str(api_key).strip().lower()
+        if low not in {"replace_me", "<replace_me>", "", "todo"} and "replace" not in low:
+            if not (low.startswith("re") and low.endswith("me") and "*" in low):
+                return api_key
+    
+    # Fallback to environment
+    return os.environ.get("GEMINI_API_KEY")
+
+
 def _is_gemini_available() -> bool:
     """Check if Gemini is configured."""
     if not HTTPX_AVAILABLE:
         return False
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = _get_gemini_api_key()
     if not api_key:
         return False
     low = str(api_key).strip().lower()
@@ -61,17 +100,24 @@ def get_gemini_suggestion(
             return f"AI error: {error_msg}"
         return {"ok": False, "text": "", "raw": None, "error": error_msg}
     
-    api_key = api_key or os.environ.get("GEMINI_API_KEY")
+    # Get API key: explicit param → HDPD config → environment
+    api_key = api_key or _get_gemini_api_key()
     if not api_key:
-        error_msg = "Missing GEMINI_API_KEY"
+        error_msg = "Missing GEMINI_API_KEY (set in HDPD config/gemini.yaml or GEMINI_API_KEY env var)"
         if return_text is True or (return_text is None and quick):
             return f"AI error: {error_msg}"
         return {"ok": False, "text": "", "raw": None, "error": error_msg}
     
-    model = model or os.environ.get("GEMINI_MODEL") or "gemini-1.5-flash"
+    # Get config from HDPD or defaults
+    config = _load_hdpd_config("gemini") or {}
+    model = model or config.get("model") or os.environ.get("GEMINI_MODEL") or "gemini-1.5-flash"
     
     if timeout is None:
-        timeout = 15 if quick else 30
+        base_timeout = config.get("timeout") or 30
+        quick_timeout = config.get("timeout_quick") or 15
+        timeout = quick_timeout if quick else base_timeout
+    else:
+        timeout = int(timeout)
     
     # Build prompt from payload
     prompt_parts = []

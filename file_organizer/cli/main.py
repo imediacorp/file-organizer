@@ -370,20 +370,20 @@ def main():
     if AI_AVAILABLE:
         suggest_parser = subparsers.add_parser('suggest', help='Get AI suggestions for organization structure')
         suggest_parser.add_argument('path', help='Path to analyze')
-        suggest_parser.add_argument('--provider', default='auto', help='AI provider (auto, ollama, openai, gemini, anthropic)')
+        suggest_parser.add_argument('--provider', default='auto', help='AI provider (auto, ollama, openai, gemini, anthropic, grok)')
         suggest_parser.add_argument('--max-files', type=int, default=50, help='Maximum number of files to analyze')
     
     # Classify command
     if AI_AVAILABLE:
         classify_parser = subparsers.add_parser('classify', help='Classify a document using AI')
         classify_parser.add_argument('file', help='File to classify')
-        classify_parser.add_argument('--provider', default='auto', help='AI provider (auto, ollama, openai, gemini, anthropic)')
+        classify_parser.add_argument('--provider', default='auto', help='AI provider (auto, ollama, openai, gemini, anthropic, grok)')
     
     # Extract metadata command
     if AI_AVAILABLE:
         metadata_parser = subparsers.add_parser('extract-metadata', help='Extract metadata from a file using AI')
         metadata_parser.add_argument('file', help='File to extract metadata from')
-        metadata_parser.add_argument('--provider', default='auto', help='AI provider (auto, ollama, openai, gemini, anthropic)')
+        metadata_parser.add_argument('--provider', default='auto', help='AI provider (auto, ollama, openai, gemini, anthropic, grok)')
     
     args = parser.parse_args()
     

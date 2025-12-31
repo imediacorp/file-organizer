@@ -10,6 +10,7 @@ try:
     from .providers.openai_client import get_openai_suggestion, _is_openai_available
     from .providers.gemini_client import get_gemini_suggestion, _is_gemini_available
     from .providers.anthropic_client import get_anthropic_suggestion, _is_anthropic_available
+    from .providers.grok_client import get_grok_suggestion, _is_grok_available
     from .cache import get_cache
     from .metrics import get_metrics_collector
 except Exception:
@@ -21,6 +22,8 @@ except Exception:
     _is_gemini_available = None
     get_anthropic_suggestion = None
     _is_anthropic_available = None
+    get_grok_suggestion = None
+    _is_grok_available = None
     get_cache = None
     get_metrics_collector = None
 
@@ -31,7 +34,8 @@ class AIProvider(str, Enum):
     OPENAI = "openai"
     GEMINI = "gemini"
     ANTHROPIC = "anthropic"
-    AUTO = "auto"  # Try Ollama first (local), then cloud providers
+    GROK = "grok"
+    AUTO = "auto"  # Try Ollama first (local), then Gemini, Grok, OpenAI, Anthropic
 
 
 def _is_ollama_available() -> bool:
@@ -129,6 +133,8 @@ def get_ai_suggestion(
             actual_provider = AIProvider.OLLAMA
         elif _is_gemini_available and _is_gemini_available():
             actual_provider = AIProvider.GEMINI
+        elif _is_grok_available and _is_grok_available():
+            actual_provider = AIProvider.GROK
         elif _is_openai_available and _is_openai_available():
             actual_provider = AIProvider.OPENAI
         elif _is_anthropic_available and _is_anthropic_available():
@@ -173,6 +179,12 @@ def get_ai_suggestion(
                 error_msg = "Anthropic client not available"
             else:
                 result = get_anthropic_suggestion(payload, **kwargs)
+        
+        elif actual_provider == AIProvider.GROK:
+            if get_grok_suggestion is None:
+                error_msg = "Grok client not available"
+            else:
+                result = get_grok_suggestion(payload, **kwargs)
         
         else:
             error_msg = f"Unknown provider: {actual_provider}"
@@ -302,6 +314,10 @@ def get_provider_status() -> Dict[str, Any]:
             "available": False,
             "configured": False,
         },
+        "grok": {
+            "available": False,
+            "configured": False,
+        },
     }
     
     # Check Ollama
@@ -329,6 +345,11 @@ def get_provider_status() -> Dict[str, Any]:
     if _is_anthropic_available is not None:
         status["anthropic"]["configured"] = _is_anthropic_available()
         status["anthropic"]["available"] = status["anthropic"]["configured"]
+    
+    # Check Grok
+    if _is_grok_available is not None:
+        status["grok"]["configured"] = _is_grok_available()
+        status["grok"]["available"] = status["grok"]["configured"]
     
     return status
 
