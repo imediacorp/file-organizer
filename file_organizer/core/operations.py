@@ -112,10 +112,21 @@ class FileOperations:
                 self.log(f"Duplicate detected, using: {dest_path.name}")
             
             # Record transaction
+            # Try to get relative paths, fall back to absolute if not subpath
+            try:
+                rel_source = str(source_path.relative_to(self.root_path))
+            except ValueError:
+                rel_source = str(source_path)
+            
+            try:
+                rel_dest = str(dest_path.relative_to(self.root_path))
+            except ValueError:
+                rel_dest = str(dest_path)
+            
             transaction = {
                 'type': 'move_file',
-                'source': str(source_path.relative_to(self.root_path)),
-                'destination': str(dest_path.relative_to(self.root_path)),
+                'source': rel_source,
+                'destination': rel_dest,
                 'absolute_source': str(source_path),
                 'absolute_destination': str(dest_path),
                 'timestamp': datetime.now().isoformat(),
@@ -134,7 +145,11 @@ class FileOperations:
                 transaction['mtime'] = stat.st_mtime
             
             self.transactions.append(transaction)
-            self.log(f"Moved: {source_path.name} -> {dest_path.relative_to(self.root_path)}")
+            try:
+                log_dest = dest_path.relative_to(self.root_path)
+            except ValueError:
+                log_dest = dest_path
+            self.log(f"Moved: {source_path.name} -> {log_dest}")
             return True
             
         except Exception as e:
@@ -185,10 +200,21 @@ class FileOperations:
                 # Move entire folder
                 dest_path.parent.mkdir(parents=True, exist_ok=True)
                 
+                # Try to get relative paths, fall back to absolute if not subpath
+                try:
+                    rel_source = str(source_path.relative_to(self.root_path))
+                except ValueError:
+                    rel_source = str(source_path)
+                
+                try:
+                    rel_dest = str(dest_path.relative_to(self.root_path))
+                except ValueError:
+                    rel_dest = str(dest_path)
+                
                 transaction = {
                     'type': 'move_folder',
-                    'source': str(source_path.relative_to(self.root_path)),
-                    'destination': str(dest_path.relative_to(self.root_path)),
+                    'source': rel_source,
+                    'destination': rel_dest,
                     'absolute_source': str(source_path),
                     'absolute_destination': str(dest_path),
                     'timestamp': datetime.now().isoformat(),
@@ -199,7 +225,11 @@ class FileOperations:
                     shutil.move(str(source_path), str(dest_path))
                 
                 self.transactions.append(transaction)
-                self.log(f"Moved folder: {source_path.name} -> {dest_path.relative_to(self.root_path)}")
+                try:
+                    log_dest = dest_path.relative_to(self.root_path)
+                except ValueError:
+                    log_dest = dest_path
+                self.log(f"Moved folder: {source_path.name} -> {log_dest}")
             
             return True
             
@@ -234,10 +264,21 @@ class FileOperations:
             if dest_path.exists():
                 dest_path = self.get_unique_filename(dest_path)
             
+            # Try to get relative paths, fall back to absolute if not subpath
+            try:
+                rel_source = str(source_path.relative_to(self.root_path))
+            except ValueError:
+                rel_source = str(source_path)
+            
+            try:
+                rel_dest = str(dest_path.relative_to(self.root_path))
+            except ValueError:
+                rel_dest = str(dest_path)
+            
             transaction = {
                 'type': 'copy_file',
-                'source': str(source_path.relative_to(self.root_path)),
-                'destination': str(dest_path.relative_to(self.root_path)),
+                'source': rel_source,
+                'destination': rel_dest,
                 'absolute_source': str(source_path),
                 'absolute_destination': str(dest_path),
                 'timestamp': datetime.now().isoformat(),
@@ -253,7 +294,11 @@ class FileOperations:
                 transaction['size'] = stat.st_size
             
             self.transactions.append(transaction)
-            self.log(f"Copied: {source_path.name} -> {dest_path.relative_to(self.root_path)}")
+            try:
+                log_dest = dest_path.relative_to(self.root_path)
+            except ValueError:
+                log_dest = dest_path
+            self.log(f"Copied: {source_path.name} -> {log_dest}")
             return True
             
         except Exception as e:
@@ -277,7 +322,11 @@ class FileOperations:
             if not path.exists():
                 if not self.dry_run:
                     path.mkdir(parents=True, exist_ok=True)
-                self.log(f"Created directory: {path.relative_to(self.root_path)}")
+                try:
+                    log_path = path.relative_to(self.root_path)
+                except ValueError:
+                    log_path = path
+                self.log(f"Created directory: {log_path}")
                 return True
             return True
         except Exception as e:
@@ -357,13 +406,21 @@ class FileOperations:
                             if not self.dry_run:
                                 shutil.move(str(source_path), str(dest_path))
                         
-                        self.log(f"Rolled back: {source_path.name} -> {dest_path.relative_to(self.root_path)}")
+                        try:
+                            log_dest = dest_path.relative_to(self.root_path)
+                        except ValueError:
+                            log_dest = dest_path
+                        self.log(f"Rolled back: {source_path.name} -> {log_dest}")
                 elif op_type == 'copy_file':
                     # For copy operations, just delete the copied file
                     source_path = Path(source)
                     if source_path.exists() and not self.dry_run:
                         source_path.unlink()
-                        self.log(f"Removed copied file: {source_path.relative_to(self.root_path)}")
+                        try:
+                            log_path = source_path.relative_to(self.root_path)
+                        except ValueError:
+                            log_path = source_path
+                        self.log(f"Removed copied file: {log_path}")
             
             self.log("Rollback complete!")
             return True

@@ -53,7 +53,17 @@ class AISuggestedStrategy(Strategy):
         
         target_folder = kwargs.get("target_folder")
         if target_folder:
-            analyze_path = root_path / target_folder
+            # Resolve target_folder relative to root_path
+            if isinstance(target_folder, (str, Path)):
+                analyze_path = root_path / target_folder
+            else:
+                analyze_path = root_path / target_folder
+            analyze_path = analyze_path.resolve()
+            # Ensure it's actually a subpath
+            try:
+                analyze_path.relative_to(root_path)
+            except ValueError:
+                raise ValueError(f"'{target_folder}' is not in the subpath of '{root_path}'")
         else:
             analyze_path = root_path
         
@@ -122,7 +132,17 @@ class AISuggestedStrategy(Strategy):
         
         target_folder = kwargs.get("target_folder")
         if target_folder:
-            analyze_path = root_path / target_folder
+            # Resolve target_folder relative to root_path
+            if isinstance(target_folder, (str, Path)):
+                analyze_path = root_path / target_folder
+            else:
+                analyze_path = root_path / target_folder
+            analyze_path = analyze_path.resolve()
+            # Ensure it's actually a subpath
+            try:
+                analyze_path.relative_to(root_path)
+            except ValueError:
+                raise ValueError(f"'{target_folder}' is not in the subpath of '{root_path}'")
         else:
             analyze_path = root_path
         

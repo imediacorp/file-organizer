@@ -106,7 +106,17 @@ class FileTypeStrategy(Strategy):
             Dictionary with results
         """
         if target_folder:
-            folder_to_organize = Path(target_folder)
+            # Resolve target_folder relative to root_path
+            if isinstance(target_folder, str):
+                folder_to_organize = root_path / target_folder
+            else:
+                folder_to_organize = root_path / target_folder
+            folder_to_organize = folder_to_organize.resolve()
+            # Ensure it's actually a subpath
+            try:
+                folder_to_organize.relative_to(root_path)
+            except ValueError:
+                raise ValueError(f"'{target_folder}' is not in the subpath of '{root_path}'")
         else:
             folder_to_organize = root_path
         
@@ -197,7 +207,17 @@ class FileTypeStrategy(Strategy):
         preview_moves = []
         
         if target_folder:
-            folder_to_analyze = Path(target_folder)
+            # Resolve target_folder relative to root_path
+            if isinstance(target_folder, str):
+                folder_to_analyze = root_path / target_folder
+            else:
+                folder_to_analyze = root_path / target_folder
+            folder_to_analyze = folder_to_analyze.resolve()
+            # Ensure it's actually a subpath
+            try:
+                folder_to_analyze.relative_to(root_path)
+            except ValueError:
+                raise ValueError(f"'{target_folder}' is not in the subpath of '{root_path}'")
         else:
             folder_to_analyze = root_path
         
